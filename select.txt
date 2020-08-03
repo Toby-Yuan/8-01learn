@@ -115,3 +115,70 @@ WHERE SupplierID in (SELECT * FROM suppliers WHERE country = 'USA')
 SELECT ProductID, ProductName,UnitPrice FROM products
 WHERE SupplierID in 
     (SELECT SupplierID FROM suppliers WHERE country = 'USA')
+
+// AVG : 平均函數
+SELECT AVG(UnitPrice) FROM products;
+
+// 產生一個表格有產品編號，產品名稱，價格以及價差(價格-平均價格)
+-- 起 
+SELECT * FROM products
+
+-- 承
+SELECT ProductID, ProductName,UnitPrice, AvgPrice??? FROM products
+--> 沒有平均價格
+
+-- 轉
+SELECT AVG(UnitPrice) FROM products;
+
+-- 合
+SELECT ProductID, ProductName,UnitPrice, 
+    28.87 AS AvgPrice
+FROM products
+
+--> 算價差
+SELECT ProductID, ProductName,UnitPrice, 
+    UnitPrice - 28.87 AS DiffPrice
+FROM products
+
+--> 正式的合併！！
+SELECT ProductID, ProductName,UnitPrice, 
+    UnitPrice - (SELECT AVG(UnitPrice) FROM products) AS DiffPrice
+FROM products
+
+--> 四捨五入到小數點第二位 : ROUND(x,2)
+SELECT ProductID, ProductName,UnitPrice, 
+    ROUND(UnitPrice - (SELECT AVG(UnitPrice) FROM products) , 2) AS DiffPrice
+FROM products
+
+// 變成針對各商品類別(先只看第一大類)
+-- 起 
+SELECT * FROM products
+
+-- 承
+SELECT ProductID, ProductName, CategoryID, UnitPrice, AvgPrice??? FROM products
+--> 沒有平均價格，而且要各個類別的
+
+-- 轉
+SELECT AVG(UnitPrice) FROM products WHERE CategoryID = 1;
+
+-- 合
+SELECT ProductID, ProductName, CategoryID, UnitPrice, 
+    UnitPrice - (SELECT AVG(UnitPrice) FROM products WHERE CategoryID = 1) AS DiffPrice
+FROM products
+
+--> 針對各類別
+1.
+SELECT ProductID, ProductName, CategoryID, (p.CategoryID), UnitPrice, 
+    UnitPrice - (SELECT AVG(UnitPrice) FROM products WHERE CategoryID = 1) AS DiffPrice
+FROM products AS p
+
+2. 讓自己接受 SELECT p.CategoryID
+SELECT ProductID, ProductName, CategoryID, (SELECT p.CategoryID), UnitPrice, 
+    UnitPrice - (SELECT AVG(UnitPrice) FROM products WHERE CategoryID = 1) AS DiffPrice
+FROM products AS p
+
+3. 替換1
+SELECT ProductID, ProductName, CategoryID, (SELECT p.CategoryID), UnitPrice,
+    (SELECT AVG(UnitPrice) FROM products WHERE CategoryID = (SELECT p.CategoryID)) AS AvgPrice,
+    UnitPrice - (SELECT AVG(UnitPrice) FROM products WHERE CategoryID = (SELECT p.CategoryID)) AS DiffPrice
+FROM products AS p
