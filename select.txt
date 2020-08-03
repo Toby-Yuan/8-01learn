@@ -1,0 +1,20 @@
+select語法
+
+// 選擇使用northwind這個資料庫(database)
+USE northwind
+
+// 從products資料表(table)選擇全部欄位，*表示全部欄位
+SELECT * FROM products
+
+// 可以選擇指定欄位
+SELECT ProductID, ProductName FROM products
+
+// WHERE可以篩選出指定欄位的值(篩選條件可以是比較值)
+SELECT ProductID, ProductName, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel
+FROM products
+WHERE UnitsInStock < ReorderLevel;
+
+// WHERE篩選條件裡面可以做數值的相加
+SELECT ProductID, ProductName, UnitPrice, UnitsInStock,UnitsOnOrder, ReorderLevel
+FROM products
+WHERE ( UnitsInStock + UnitsOnOrder ) < ReorderLevel;
