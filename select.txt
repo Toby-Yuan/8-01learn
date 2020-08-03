@@ -53,7 +53,30 @@ SELECT *
 FROM products
 ORDER BY SupplierID
 
-// NULL : 空白值
+// NULL : 空白值?? 不知道?? 0??
 SELECT companyname, fax
 FROM suppliers
 WHERE fax IS NULL;
+
+// DISTINCT : 重複的只留一筆
+SELECT DISTINCT country
+FROM suppliers
+ORDER BY country;
+
+// AS : 變更欄位名稱 (list_name) AS (new_list_name)，是更換結果不是過程！！！
+SELECT ProductID AS `產品編號`
+FROM products;
+
+--> SELECT ProductID `產品名稱`
+
+// CONCAT : 字串相連(數字要經過轉換)
+SELECT FirstName, LastName, 
+CONCAT('Identification number:', CONVERT(EmployeeID,varchar(2)) ) AS ID
+FROM employees;
+
+// LIMIT int : 依照排序取前面幾筆，LIMIT int(a), int(b) : 跳過a筆取b筆
+// DESC : 從大到小排列
+SELECT ProductID, ProductName, UnitPrice
+FROM products
+ORDER BY UnitPrice DESC
+limit 3;
