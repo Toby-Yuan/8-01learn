@@ -80,3 +80,38 @@ SELECT ProductID, ProductName, UnitPrice
 FROM products
 ORDER BY UnitPrice DESC
 limit 3;
+
+
+// 子查詢Subquery
+    在query中的query
+
+// 例子 :
+SELECT * FROM orders
+WHERE OrderDate = 
+    (SELECT MAX(OrderDate) FROM orders);
+
+// 課堂範例題目：美商供應的產品清單
+-- 起
+SELECT * FROM products
+
+-- 承
+SELECT ProductID, ProductName,UnitPrice FROM products
+WHERE ???
+--> 主要目標不是在這個資料表
+
+-- 轉
+SELECT * FROM suppliers WHERE country = 'USA'
+--> 供應商資料在suppliers資料夾
+
+-- 合
+SELECT ProductID, ProductName,UnitPrice FROM products
+WHERE SupplierID in (2, 3, 16, 19)
+
+--> 合併，但是太多了
+SELECT ProductID, ProductName,UnitPrice FROM products
+WHERE SupplierID in (SELECT * FROM suppliers WHERE country = 'USA')
+
+--> 縮減成一欄
+SELECT ProductID, ProductName,UnitPrice FROM products
+WHERE SupplierID in 
+    (SELECT SupplierID FROM suppliers WHERE country = 'USA')
