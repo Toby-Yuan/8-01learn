@@ -23,6 +23,8 @@ WHERE ( UnitsInStock + UnitsOnOrder ) < ReorderLevel;
 SELECT * FROM products
 WHERE ProductName LIKE 'c%'
 
+--> 大小寫區分 : LIKE BINARY
+
 // WHERE的篩選條件裡面可以有邏輯運算元，要注意()的順序問題
 SELECT ProductID, ProductName, UnitPrice, UnitsInStock,UnitsOnOrder, ReorderLevel
 FROM products
@@ -45,3 +47,13 @@ WHERE UnitPrice >= 10 and UnitPrice <= 20;
 SELECT *
 FROM products
 WHERE CategoryID IN (1, 4, 8);
+
+// ORDER BY : 排序
+SELECT *
+FROM products
+ORDER BY SupplierID
+
+// NULL : 空白值
+SELECT companyname, fax
+FROM suppliers
+WHERE fax IS NULL;
